@@ -8,6 +8,7 @@ output_name=$(echo ffuf_$host | sed 's/https\:\/\///g' | sed 's/\/FUZZ//g' | sed
 
 current_folder=$(pwd)
 threads=5
+#if you don't use ext or filters you should modify the launch of fuff cause the behaviour will be strange.
 ext=".asp,.aspx,.config,.php"
 filters="-fw 6"
 flag=0
@@ -93,6 +94,7 @@ do
     echo "dentro del while"
 	dict=./wordlists/$(ls -l wordlists | head -2 | awk '{print $9}' | xargs)
 	sufix=$(ls -l wordlists | head -2 | awk '{print $9}' | awk '{print $2}' FS="_" | xargs)
+	echo "ffuf -w $(echo $dict | xargs | tr -d " ") -u $host -e $ext -o $output_folder/$output_name\_$sufix.json -of json -t $threads -c -debug-log ./ffuf_logs/log_sufix_$(echo $sufix | xargs).log $filters"
 	ffuf -w $(echo $dict | xargs | tr -d " ") -u $host -e $ext -o $output_folder/$output_name\_$sufix.json -of json -t $threads -c -debug-log ./ffuf_logs/log_sufix_$(echo $sufix | xargs).log $filters
     sleep 10
 	if [ $flag -eq 0 ]
