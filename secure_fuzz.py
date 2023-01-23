@@ -140,15 +140,25 @@ def fuzzing(url, extensions, wordlist_local_name, output_local_folder):
     print(wordlist_local_name)
     print(output_local_folder)
 
-    
+    extensions_empty = True
+
+    if extensions == "":
+        print("Extension Empty")
+    else:
+        print("Extension NOT Empty!")
+        extensions_empty = False
+        extensions = "-e " + extensions
+
+    time.sleep(10)
+
     list_wordlists = sorted(list(list_files(wordlist_local_name)))
     i = 0
     while len(list_wordlists) > 0:
         current_wordlist = list_wordlists[0]
         #os.system("")
-        print("ffuf -u %s -w %s/%s -o %s.json -of json -rate 5 -H 'User-Agent: custom string'"%(url, wordlist_local_name, current_wordlist, output_local_folder))
+        print("ffuf -u %s -w %s/%s %s -o %s.json -of json -rate 5 -H 'User-Agent: custom string'"%(url, wordlist_local_name, current_wordlist, extensions, output_local_folder))
         print(current_wordlist)
-        os.system("ffuf -u %s -w %s/%s -o %s.json -of json -rate 5 -H 'User-Agent: custom string'"%(url, wordlist_local_name, current_wordlist, output_local_folder))
+        os.system("ffuf -u %s -w %s/%s %s -o %s.json -of json -rate 5 -H 'User-Agent: custom string'"%(url, wordlist_local_name, current_wordlist, extensions, output_local_folder))
         p1 = log.progress("Exiting...")
         p1.success("Press Ctrl+C again to exit the program definitivelly!")
         time.sleep(10)
